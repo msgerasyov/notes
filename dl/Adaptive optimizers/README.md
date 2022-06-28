@@ -1,9 +1,3 @@
----
-title: Adaptive optimizers
-updated: 2022-06-28 07:27:51Z
-created: 2022-06-18 22:27:48Z
----
-
 Source: http://ruder.io/optimizing-gradient-descent/
 
 ### Momentum
@@ -30,7 +24,9 @@ for i in range(n_iter):
 
 ### Nesterov accelerated gradient
 
-We know that we will use our momentum term $\gamma v_{t−1}$ to move the parameters $\theta$. Computing $\theta - \gamma v_{t-1}$ thus gives us an approximation of the next position of the parameters (the gradient is missing for the full update), a rough idea where our parameters are going to be. We can now effectively look ahead by calculating the gradient not w.r.t. to our current parameters $\theta$ but w.r.t. the approximate future position of our parameters:
+We know that we will use our momentum term to move the parameters. Computing 
+$$\theta - \gamma v_{t-1}$$ 
+thus gives us an approximation of the next position of the parameters (the gradient is missing for the full update), a rough idea where our parameters are going to be. We can now effectively look ahead by calculating the gradient not w.r.t. to our current parameters $\theta$ but w.r.t. the approximate future position of our parameters:
 
 $$v_t = \gamma v_{t−1} + \eta \nabla_\theta J(\theta - \gamma v_{t-1})$$
 $$\theta = \theta - v_t$$
@@ -54,7 +50,7 @@ Adagrad is an algorithm for gradient-based optimization that does just this: It 
 
 $$\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{G_t + \epsilon}} g_t$$
 
-$G_t$ here is a diagonal matrix where each diagonal element $i,i$ is the sum of the squares of the gradients w.r.t. $\theta_i$ up to time step $t$. One of Adagrad's main benefits is that it eliminates the need to manually tune the learning rate. 
+$G_t$ here is a diagonal matrix where each diagonal element is the sum of the squares of the gradients up to time step $t$. One of Adagrad's main benefits is that it eliminates the need to manually tune the learning rate. 
 
 ```
 alpha = 0.7 # learning rate. Please change.
@@ -129,7 +125,7 @@ Adaptive Moment Estimation (Adam) is another method that computes adaptive learn
 $$m_t = \beta_1 m_{t-1} + (1 - \beta_1) g_t$$
 $$v_t = \beta_2 v_{t-1} + (1 - \beta_2) g_t^2$$
 
-As $m_t$ and $v_t$ are initialized as vectors of 0's, the authors of Adam observe that they are biased towards zero, especially during the initial time steps, and especially when the decay rates are small (i.e. $\beta_1$ and $\beta_2$ are close to 1). They counteract these biases by computing bias-corrected first and second moment estimates:
+As $m$ and $v$ are initialized as vectors of 0's, the authors of Adam observe that they are biased towards zero, especially during the initial time steps, and especially when the decay rates are small. They counteract these biases by computing bias-corrected first and second moment estimates:
 
 $$\hat{m}_t = \frac{m_t}{1 - \beta^t_1}$$
 $$\hat{v}_t = \frac{v_t}{1 - \beta^t_2}$$
@@ -222,7 +218,7 @@ Reddi et al. (2018) formalize this issue and pinpoint the exponential moving ave
 
 To fix this behaviour, the authors propose a new algorithm, AMSGrad that uses the maximum of past squared gradients $v_t$ rather than the exponential average to update the parameters. 
 
-Instead of using $v_t$ (or its bias-corrected version $\hat{v}_t$) directly, we now employ the previous $v_{t−1}$ if it is larger than the current one:
+Instead of using $v_t$ (or its bias-corrected version) directly, we now employ the previous $v_{t−1}$ if it is larger than the current one:
 
 $$\hat{v}_t = max(\hat{v}_{t − 1}, v_t)$$
 
