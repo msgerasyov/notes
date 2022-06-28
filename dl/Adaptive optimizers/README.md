@@ -1,3 +1,9 @@
+---
+title: Adaptive optimizers
+updated: 2022-06-28 07:27:51Z
+created: 2022-06-18 22:27:48Z
+---
+
 Source: http://ruder.io/optimizing-gradient-descent/
 
 ### Momentum
